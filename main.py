@@ -14,6 +14,7 @@ def index():
         video_url = request.form["video_url"]
         thumbnail_urls = get_thumbnail_urls(video_url)
         return render_template("index.html", thumbnail_urls=thumbnail_urls)
+    # else:
     return render_template("index.html")
 
 

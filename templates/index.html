@@ -66,10 +66,13 @@
         <div class="thumbnails-wrapper">
             <h2>Thumbnails from the given YouTube video:</h2>
             {% for thumbnail_url in thumbnail_urls %}
-            <div class="thumbnail-container">
-                <p>{{ thumbnail_url }}</p>
-                <img src="{{ thumbnail_url }}" alt="Thumbnail">
-            </div>
+              <div class="thumbnail-container">
+                  {% if loop.index > 1 %}
+                  <hr>
+                  {% endif %}
+                  <p><a href="{{ thumbnail_url }}">{{ thumbnail_url }}</a></p>
+                  <img src="{{ thumbnail_url }}" alt="Thumbnail">
+              </div>
             {% endfor %}
         </div>
         {% endif %}
