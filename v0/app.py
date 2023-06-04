@@ -2,10 +2,10 @@
 
 import json
 
-import yt_dlp
+import requests
 from flask import Flask, render_template, request
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates")
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -14,25 +14,20 @@ def index():
         video_url = request.form["video_url"]
         thumbnail_urls = get_thumbnail_urls(video_url)
         return render_template("index.html", thumbnail_urls=thumbnail_urls)
-    # else:
     return render_template("index.html")
 
 
 def get_thumbnail_urls(video_url):
-    ydl = yt_dlp.YoutubeDL()
-    info = ydl.extract_info(video_url, download=False)
-    json_data = json.dumps(info)
-    data = json.loads(json_data)
-    save_json_data(data)
-    all_thumbnails = data["thumbnails"]
-    thumbnails_with_size = []
-    for tn in all_thumbnails:
-        if "resolution" in tn.keys():
-            if tn["resolution"] in ["1920x1080", "1280x720", "640x480", "320x180"]:
-                thumbnails_with_size.append([tn["url"], tn["width"] * tn["height"]])
-    thumbnails_with_size.sort(reverse=True, key=lambda x: x[1])
-    thumbnails_to_show = [i[0] for i in thumbnails_with_size]
-    return thumbnails_to_show
+    video_id = extract_video_id(video_url)
+    if video_id:
+        api_url = f"https://www.youtube.com/oembed?url=http://www.youtube.com/watch?v={video_id}&format=json"
+        response = requests.get(api_url)
+        if response.status_code == 200:
+            data = json.loads(response.text)
+            save_json_data(data)
+            thumbnail_urls = [data["thumbnail_url"]]
+            return thumbnail_urls
+    return None
 
 
 def save_json_data(data):

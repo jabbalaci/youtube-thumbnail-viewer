@@ -10,6 +10,7 @@ packages = [{include = "youtube_thumbnail_viewer"}]
 python = "^3.11"
 yt-dlp = "^2023.3.4"
 flask = "^2.3.2"
+requests = "^2.31.0"
 
 
 [build-system]
