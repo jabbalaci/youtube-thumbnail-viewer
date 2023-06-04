@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "youtube-thumbnail-viewer"
+version = "0.1.0"
+description = ""
+authors = ["Jabba Laci <jabba.laci@gmail.com>"]
+readme = "README.md"
+packages = [{include = "youtube_thumbnail_viewer"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+yt-dlp = "^2023.3.4"
+flask = "^2.3.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
